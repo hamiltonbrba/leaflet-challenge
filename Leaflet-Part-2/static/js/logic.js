@@ -7,7 +7,6 @@ d3.json(earthquakeDataUrl).then(function(data) {
     createFeatures(data.features);
 });
 
-
 // Fetch the tectonic plate boundaries data from GitHub
 let tectonicPlatesUrl = 'https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json';
 
@@ -22,10 +21,15 @@ d3.json(tectonicPlatesUrl).then(function(data) {
 // Initialize the map
 let map = L.map('map').setView([37.0902, -95.7129], 5);
 
-// Add the OpenStreetMap tile layer
+// Add the OpenStreetMap tile layer (street map)
 let streetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
+
+// Add the Satellite tile layer (Esri World Imagery)
+let satelliteMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles © Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+});
 
 // Create layer groups for the earthquake data and tectonic plates
 let earthquakes = L.layerGroup();
@@ -59,7 +63,6 @@ function createFeatures(earthquakeData) {
             radius: radius        // Radius based on earthquake magnitude
         }).bindPopup(`<h3>Location: ${feature.properties.place}</h3><hr><p>Magnitude: ${magnitude}</p><p>Depth: ${depth} km</p>`)
         .addTo(earthquakes);  // Adding to earthquakes overlay
-
     });
     earthquakes.addTo(map);  // Add the earthquake layer to the map by default
 }
@@ -88,7 +91,8 @@ legend.addTo(map);
 
 // Base maps and overlay maps for layer control
 let baseMaps = {
-    "Street Map": streetMap
+    "Street Map": streetMap,
+    "Satellite Map": satelliteMap
 };
 
 let overlayMaps = {
