@@ -52,7 +52,7 @@ let legend = L.control({ position: 'bottomright' });
 legend.onAdd = function() {
     const div = L.DomUtil.create('div', 'info legend');
     const depths = [-10, 10, 30, 50, 70, 90];
-    const colors = ['lightblue', 'green', 'yellow', 'orange', 'red', 'darkred'];
+    const colors = ['#ccffcc', 'green', 'yellow', 'orange', 'red', 'darkred'];
 
     div.innerHTML = '<strong>Depth (km)</strong><br>';
 
